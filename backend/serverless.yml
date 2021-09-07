@@ -2,8 +2,8 @@ service: realworld
 
 provider:
   name: aws
-  runtime: nodejs8.10
-  region: us-east-1
+  runtime: nodejs14.x
+  region: sa-east-1
   environment:
     DYNAMODB_NAMESPACE: ${opt:stage, "dev"}
   iamRoleStatements:

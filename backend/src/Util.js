@@ -1,6 +1,6 @@
 /* istanbul ignore next */
 if (!process.env.AWS_REGION) {
-  process.env.AWS_REGION = 'us-east-1';
+  process.env.AWS_REGION = 'sa-east-1';
 }
 
 /* istanbul ignore next */
