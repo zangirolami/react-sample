@@ -72,8 +72,6 @@ function Tab({ tab, active, onClick }: { tab: string; active: boolean; onClick: 
 }
 
 function ArticleList({ articles }: { articles: ArticleViewerState['articles'] }) {
-  // eslint-disable-next-line no-console
-  console.log(articles);
   return articles.match({
     none: () => (
       <div className='article-preview' key={1}>

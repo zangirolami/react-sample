@@ -39,7 +39,8 @@ module.exports = {
       author: authenticatedUser.username,
       dummy: 'OK',
     };
-    if (articleData.tagList) {
+
+    if (articleData.tagList.length > 0) {
       article.tagList = Util.DocumentClient.createSet(articleData.tagList);
     }
 

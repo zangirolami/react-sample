@@ -1,6 +1,7 @@
 import { Option } from '@hqoss/monads';
 import { format } from 'date-fns';
 import React, { Fragment, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { Link, useParams } from 'react-router-dom';
 import {
   createComment,
@@ -58,7 +59,7 @@ export function ArticlePage() {
 
         <div className='container page'>
           <div className='row article-content'>
-            <div className='col-md-12'>{article.body}</div>
+            <ReactMarkdown className='col-md-12' children={article.body}/>
             <TagList tagList={article.tagList} />
           </div>
 
@@ -388,7 +389,7 @@ function ArticleComment({
   );
 }
 
-async function onDeleteComment(slug: string, id: number) {
+async function onDeleteComment(slug: string, id: string) {
   await deleteComment(slug, id);
   store.dispatch(loadComments(await getArticleComments(slug)));
 }

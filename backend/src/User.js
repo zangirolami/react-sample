@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
  */
 module.exports = {
 
+
+
   /** Create user */
   async create(event) {
     const body = JSON.parse(event.body);
@@ -21,6 +23,9 @@ module.exports = {
     }
     if (!newUser.email) {
       return Util.envelop('Email must be specified.', 422);
+    }
+    if (!validateEmail(newUser.email)) {
+      return Util.envelop('Email must be valid', 422);
     }
     if (!newUser.password) {
       return Util.envelop('Password must be specified.', 422);
@@ -70,10 +75,12 @@ module.exports = {
     if (!user.email) {
       return Util.envelop('Email must be specified.', 422);
     }
+    if (!validateEmail(user.email)) {
+      return Util.envelop('Email must be valid', 422);
+    }
     if (!user.password) {
       return Util.envelop('Password must be specified.', 422);
     }
-
     // Get user with this email
     const userWithThisEmail = await getUserByEmail(user.email);
     if (userWithThisEmail.Count !== 1) {
@@ -127,16 +134,24 @@ module.exports = {
     const updatedUser = {
       username: authenticatedUser.username,
     };
+    // Get User Info
+    const userWithThisEmail = await getUserByEmail(user.email);
+
     if (user.email) {
-      // Verify email is not taken
-      const userWithThisEmail = await getUserByEmail(user.email);
-      if (userWithThisEmail.Count !== 0) {
+      // Verify email format
+      if (!validateEmail(user.email)) {
+        return Util.envelop('Email must be valid', 422);
+      }
+      // eslint-disable-next-line max-len
+      if (userWithThisEmail.count!== 0 && userWithThisEmail.Items[0].email !== user.email) {
         return Util.envelop(`Email already taken: [${user.email}]`, 422);
       }
       updatedUser.email = user.email;
     }
     if (user.password) {
       updatedUser.password = bcrypt.hashSync(user.password, 5);
+    }else{
+      updatedUser.password = userWithThisEmail.Items[0].password;
     }
     if (user.image) {
       updatedUser.image = user.image;
@@ -331,4 +346,10 @@ async function authenticateAndGetUser(event) {
   } catch (err) {
     return null;
   }
+}
+
+function validateEmail(email) {
+  // eslint-disable-next-line max-len
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }
