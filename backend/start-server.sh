@@ -12,8 +12,8 @@ which java
 java -version
 
 # Start local dynamodb and offline plugins
-export AWS_ACCESS_KEY_ID=AKIAXTRNJWINYCPSHMBG
-export AWS_SECRET_ACCESS_KEY=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
+export AWS_ACCESS_KEY_ID=foo
+export AWS_SECRET_ACCESS_KEY=baa
 serverless dynamodb start --migrate &
 sleep 5
 nyc serverless offline &
