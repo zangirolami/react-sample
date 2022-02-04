@@ -1,2 +1,2 @@
 # react-sample
- Using RealWoeld/Conduit source samples
+ Using RealWorld/Conduit source samples
